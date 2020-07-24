@@ -4,11 +4,17 @@ import { Link } from "react-router-dom";
 
 import cookieSrc from "../cookie.svg";
 
+import Item from './Item.js';
+
 const items = [
   { id: "cursor", name: "Cursor", cost: 10, value: 1 },
   { id: "grandma", name: "Grandma", cost: 100, value: 10 },
   { id: "farm", name: "Farm", cost: 1000, value: 80 },
 ];
+
+const handleClick = (testVar) => {
+  console.log(testVar);
+};
 
 const Game = () => {
   // TODO: Replace this with React state!
@@ -19,6 +25,7 @@ const Game = () => {
     farm: 0,
   };
 
+  const testingVariable = 'Lenzo Jambalaya';
   return (
     <Wrapper>
       <GameArea>
@@ -34,7 +41,9 @@ const Game = () => {
 
       <ItemArea>
         <SectionTitle>Items:</SectionTitle>
-        {/* TODO: Add <Item> instances here, 1 for each item type. */}
+        {items.map(item => 
+          <Item key={item.id} obj={item} owned={purchasedItems[item.id]} handleClick={(testingVariable) => handleClick(testingVariable)}/>
+        )}
       </ItemArea>
       <HomeLink to="/">Return home</HomeLink>
     </Wrapper>
