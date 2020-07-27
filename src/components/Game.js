@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -12,19 +12,17 @@ const items = [
   { id: "farm", name: "Farm", cost: 1000, value: 80 },
 ];
 
-const handleClick = (testVar) => {
+const handleClick = (cookies, item) => {
   console.log(testVar);
 };
 
 const Game = () => {
-  // TODO: Replace this with React state!
-  const numCookies = 100;
-  const purchasedItems = {
+  const [numCookies, setNumCookies] = useState(100);
+  const [purchasedItems, setPurchasedItems] = useState({
     cursor: 0,
     grandma: 0,
     farm: 0,
-  };
-
+  });
   const testingVariable = 'Lenzo Jambalaya';
   return (
     <Wrapper>
@@ -34,7 +32,7 @@ const Game = () => {
           {/* TODO: Calcuate the cookies per second and show it here: */}
           <strong>0</strong> cookies per second
         </Indicator>
-        <Button>
+        <Button onClick={() => setNumCookies(numCookies + 1)}>
           <Cookie src={cookieSrc} />
         </Button>
       </GameArea>
@@ -42,7 +40,7 @@ const Game = () => {
       <ItemArea>
         <SectionTitle>Items:</SectionTitle>
         {items.map(item => 
-          <Item key={item.id} obj={item} owned={purchasedItems[item.id]} handleClick={(testingVariable) => handleClick(testingVariable)}/>
+          <Item key={item.id} obj={item} owned={purchasedItems[item.id]} handleClick={(numCookies) => handleClick(numCookies)}/>
         )}
       </ItemArea>
       <HomeLink to="/">Return home</HomeLink>
