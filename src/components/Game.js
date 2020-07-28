@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -6,6 +6,8 @@ import cookieSrc from "../cookie.svg";
 
 import Item from './Item.js';
 import useInterval from "../hooks/use-interval.hook";
+import useKeydown from "../hooks/useKeydown";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const items = [
   { id: "cursor", name: "Cursor", cost: 10, value: 1 },
@@ -45,28 +47,11 @@ const Game = () => {
     farm: 0,
   });
 
-  // focus on first item on mount
-  // useEffect(() => {
-  //   ref.current.focus();
-  // }, []);
-
   // html page title
-  useEffect(() => {
-    document.title = `${numCookies} cookies!`;
-  }, [numCookies]);
+  useDocumentTitle(`${numCookies} cookies!`, 'More cookies!');
 
-  // adds cookie on C key press
-  useEffect(() => {
-    const spaceKeyDown = (e) => {
-      if (e.code === 'KeyC')
-        setNumCookies(c => c + 1);
-    };
-  
-    window.addEventListener('keydown', spaceKeyDown);
-    return () => {
-      window.removeEventListener('keydown', spaceKeyDown);
-    }
-  });
+  // use C key to add cookies
+  useKeydown('KeyC', () => setNumCookies(c => c + 1));
 
   // adds the generated cookies every second
   useInterval(() => {
