@@ -45,10 +45,25 @@ const Game = () => {
     farm: 0,
   });
 
+  // html page title
   useEffect(() => {
     document.title = `${numCookies} cookies!`;
   }, [numCookies]);
 
+  // adds cookie on space bar press
+  useEffect(() => {
+    const spaceKeyDown = (e) => {
+      if (e.code === 'KeyC')
+        setNumCookies(c => c + 1);
+    };
+  
+    window.addEventListener('keydown', spaceKeyDown);
+    return () => {
+      window.removeEventListener('keydown', spaceKeyDown);
+    }
+  });
+
+  // adds the generated cookies every second
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
     setNumCookies(c => c + numOfGeneratedCookies);
