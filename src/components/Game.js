@@ -45,12 +45,17 @@ const Game = () => {
     farm: 0,
   });
 
+  // focus on first item on mount
+  // useEffect(() => {
+  //   ref.current.focus();
+  // }, []);
+
   // html page title
   useEffect(() => {
     document.title = `${numCookies} cookies!`;
   }, [numCookies]);
 
-  // adds cookie on space bar press
+  // adds cookie on C key press
   useEffect(() => {
     const spaceKeyDown = (e) => {
       if (e.code === 'KeyC')
@@ -90,6 +95,7 @@ const Game = () => {
             purchasedItems={purchasedItems} 
             setPurchasedItems={setPurchasedItems} 
             handleClick={(id) => canPurchase(id, numCookies, setNumCookies)}
+            isFirstItem={items.indexOf(item) === 0 ? true : false}
           />
         )}
       </ItemArea>

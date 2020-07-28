@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
-const Item = ({obj, purchasedItems, setPurchasedItems, handleClick}) => {
+const Item = ({obj, purchasedItems, setPurchasedItems, handleClick, isFirstItem}) => {
     const {name, id, cost, value} = obj;
+    const btnRef = useRef(null);
+
+    useEffect(() => {
+        if (isFirstItem)
+            btnRef.current.focus();
+    });
 
     return (
-        <button onClick={(e) => handleClick(id) ? setPurchasedItems({...purchasedItems, [id]: purchasedItems[id] + 1}) : console.log('Not enough cookies!')}>
+        <button 
+            onClick={(e) => handleClick(id) ? setPurchasedItems({...purchasedItems, [id]: purchasedItems[id] + 1}) : console.log('Not enough cookies!')}
+            ref={btnRef}
+        >
             <Name>{name}</Name>
             <Id>{id}</Id>
             <Cost>{cost}</Cost>
