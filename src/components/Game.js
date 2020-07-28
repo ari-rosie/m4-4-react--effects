@@ -12,8 +12,12 @@ const items = [
   { id: "farm", name: "Farm", cost: 1000, value: 80 },
 ];
 
-const handleClick = (cookies, item) => {
-  console.log(testVar);
+// function returns true if player has enough cookies to purchase an item
+const canPurchase = (id, numCookies) => {
+  const buyItem = items.find(item => item.id === id);
+  if (buyItem.cost <= numCookies) 
+    return true;
+  return false;
 };
 
 const Game = () => {
@@ -23,7 +27,8 @@ const Game = () => {
     grandma: 0,
     farm: 0,
   });
-  const testingVariable = 'Lenzo Jambalaya';
+
+
   return (
     <Wrapper>
       <GameArea>
@@ -40,7 +45,13 @@ const Game = () => {
       <ItemArea>
         <SectionTitle>Items:</SectionTitle>
         {items.map(item => 
-          <Item key={item.id} obj={item} owned={purchasedItems[item.id]} handleClick={(numCookies) => handleClick(numCookies)}/>
+          <Item 
+            key={item.id} 
+            obj={item} 
+            purchasedItems={purchasedItems} 
+            setPurchasedItems={setPurchasedItems} 
+            handleClick={(id) => canPurchase(id, numCookies)}
+          />
         )}
       </ItemArea>
       <HomeLink to="/">Return home</HomeLink>

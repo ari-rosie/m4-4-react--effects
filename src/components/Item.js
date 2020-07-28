@@ -1,16 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Item = ({obj, owned, handleClick}) => {
+const Item = ({obj, purchasedItems, setPurchasedItems, handleClick}) => {
     const {name, id, cost, value} = obj;
-    handleClick('Not Lenzo');
+
     return (
-        <button>
+        <button onClick={(e) => handleClick(id) ? setPurchasedItems({...purchasedItems, [id]: purchasedItems[id] + 1}) : console.log('Not enough cookies!')}>
             <Name>{name}</Name>
             <Id>{id}</Id>
             <Cost>{cost}</Cost>
             <Value>{value}</Value>
-            <Owned>{owned}</Owned>
+            <Owned>{purchasedItems[id]}</Owned>
         </button>
     );
 
