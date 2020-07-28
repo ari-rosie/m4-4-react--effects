@@ -45,6 +45,10 @@ const Game = () => {
     farm: 0,
   });
 
+  useEffect(() => {
+    document.title = `${numCookies} cookies!`;
+  }, [numCookies]);
+
   useInterval(() => {
     const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
     setNumCookies(c => c + numOfGeneratedCookies);
