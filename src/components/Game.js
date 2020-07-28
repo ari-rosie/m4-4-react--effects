@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import cookieSrc from "../cookie.svg";
 
 import Item from './Item.js';
+import useInterval from "../hooks/use-interval.hook";
 
 const items = [
   { id: "cursor", name: "Cursor", cost: 10, value: 1 },
@@ -13,13 +14,29 @@ const items = [
 ];
 
 // function returns true if player has enough cookies to purchase an item
-const canPurchase = (id, numCookies) => {
+const canPurchase = (id, numCookies, setNumCookies) => {
   const buyItem = items.find(item => item.id === id);
-  if (buyItem.cost <= numCookies) 
+  if (buyItem.cost <= numCookies){
+    setNumCookies(c => c - buyItem.cost);
     return true;
+  }
   return false;
 };
 
+// function returns the total of cookies per second of all purchased items
+const calculateCookiesPerTick = (purchasedItems) => {
+  let total = 0;
+  for (const p in purchasedItems){
+    const item =  items.find(i => i.id === p);
+    const cookiesSec = item.value * purchasedItems[p];
+    total = total + cookiesSec;
+  }
+  return total;
+};
+
+
+
+//COMPONENT
 const Game = () => {
   const [numCookies, setNumCookies] = useState(100);
   const [purchasedItems, setPurchasedItems] = useState({
@@ -28,14 +45,17 @@ const Game = () => {
     farm: 0,
   });
 
+  useInterval(() => {
+    const numOfGeneratedCookies = calculateCookiesPerTick(purchasedItems);
+    setNumCookies(c => c + numOfGeneratedCookies);
+  }, 1000);
 
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          {/* TODO: Calcuate the cookies per second and show it here: */}
-          <strong>0</strong> cookies per second
+          <strong>{calculateCookiesPerTick(purchasedItems)}</strong> cookies per second
         </Indicator>
         <Button onClick={() => setNumCookies(numCookies + 1)}>
           <Cookie src={cookieSrc} />
@@ -50,7 +70,7 @@ const Game = () => {
             obj={item} 
             purchasedItems={purchasedItems} 
             setPurchasedItems={setPurchasedItems} 
-            handleClick={(id) => canPurchase(id, numCookies)}
+            handleClick={(id) => canPurchase(id, numCookies, setNumCookies)}
           />
         )}
       </ItemArea>
